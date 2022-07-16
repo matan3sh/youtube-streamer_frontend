@@ -21,3 +21,14 @@ export async function loginUser(payload: { email: string; password: string }) {
   });
   return res.data;
 }
+
+export async function getLoggedInUser() {
+  try {
+    const res = await axios.get(userBase, {
+      withCredentials: true,
+    });
+    return res.data;
+  } catch (error) {
+    return null;
+  }
+}

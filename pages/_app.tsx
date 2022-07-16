@@ -8,6 +8,7 @@ import { MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
 
 import { QueryClient, QueryClientProvider } from "react-query";
+import { AuthContextProvider } from "../context/auth";
 
 const queryClient = new QueryClient();
 
@@ -41,11 +42,13 @@ function MyApp(props: AppPropsWithLayout) {
         theme={{ colorScheme: "light" }}>
         <NotificationsProvider>
           <QueryClientProvider client={queryClient}>
-            {getLayout(
-              <main>
-                <Component {...pageProps} />
-              </main>
-            )}
+            <AuthContextProvider>
+              {getLayout(
+                <main>
+                  <Component {...pageProps} />
+                </main>
+              )}
+            </AuthContextProvider>
           </QueryClientProvider>
         </NotificationsProvider>
       </MantineProvider>
