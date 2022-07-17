@@ -4,6 +4,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { useMutation } from "react-query";
 import { updateVideo } from "../api";
+import { useVideo } from "../context/videos";
 import { Video } from "../types";
 
 type input = Parameters<typeof updateVideo>["0"];
@@ -15,6 +16,7 @@ function EditVideo({
   videoId: string;
   setOpened: Dispatch<SetStateAction<boolean>>;
 }) {
+  const { refetch } = useVideo();
   const form = useForm({
     initialValues: {
       title: "",
@@ -28,6 +30,7 @@ function EditVideo({
     {
       onSuccess: () => {
         setOpened(false);
+        refetch();
       },
     }
   );
