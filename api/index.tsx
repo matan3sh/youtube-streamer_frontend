@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Video } from "../types";
 
 const base = process.env.NEXT_PUBLIC_API_ENDPOINT;
 const userBase = `${base}/api/users`;
@@ -31,4 +32,35 @@ export async function getLoggedInUser() {
   } catch (error) {
     return null;
   }
+}
+
+export async function uploadVideo({
+  formData,
+  config,
+}: {
+  formData: FormData;
+  config: { onUploadProgress: (progressEvent: any) => void };
+}) {
+  const res = await axios.post(videosBase, formData, {
+    ...config,
+    withCredentials: true,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return res.data;
+}
+
+export async function updateVideo({
+  videoId,
+  ...payload
+}: {
+  videoId: string;
+  title: string;
+  description: string;
+  published: boolean;
+}) {
+  return await axios.patch<Video>(`${videosBase}/${videoId}`, payload, {
+    withCredentials: true,
+  });
 }
